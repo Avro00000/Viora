@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study in UK | Viora Education Consultancy</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #001F3F;
+            --primary-dark: #000D1A;
+            --secondary: #00B4D8;
+            --accent: #48CAE4;
+            --white: #FFFFFF;
+            --light: #F0F4F8;
+            --gray: #64748B;
+            --dark: #1E293B;
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 31, 63, 0.15);
+            --shadow: 0 8px 32px rgba(0, 31, 63, 0.12);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #F0F4F8 0%, #E8EEF4 50%, #FFFFFF 100%); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
+        
+        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 31, 63, 0.1); }
+        .logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .logo img { height: 45px; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 500; transition: color 0.3s ease; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--secondary); transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--secondary); }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 2px;
+            background: var(--dark);
+            transition: all 0.3s ease;
+        }
+        
+        .hero { min-height: 80vh; display: flex; align-items: center; padding: 8rem 5% 3rem; position: relative; background: url('hero section banner for uk.jpg'); background-size: cover; background-position: center; box-shadow: 0 8px 32px rgba(0, 31, 63, 0.15); overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, rgba(0, 31, 63, 0.8) 0%, rgba(0, 31, 63, 0.2) 100%); }
+        .hero-content { position: relative; z-index: 2; max-width: 50%; padding-left: 2rem; }
+        .hero-small { font-size: 1.2rem; color: white; margin-bottom: 0.5rem; font-weight: 400; }
+        .hero-large { font-size: 4rem; color: white; font-weight: 900; line-height: 1; }
+        
+        .content { max-width: 1000px; margin: 0 auto; padding: 2rem 5% 4rem; }
+        
+        .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; margin-bottom: 2rem; font-weight: 500; transition: all 0.3s ease; }
+        .back-btn:hover { background: var(--secondary); transform: translateX(-3px); }
+        
+        .tabs-container { background: var(--glass); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid var(--glass-border); box-shadow: var(--shadow); overflow: hidden; }
+        
+        .tabs-nav { display: flex; background: rgba(0, 31, 63, 0.03); border-bottom: 1px solid var(--glass-border); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .tab-btn { flex: 1; min-width: 140px; padding: 1.25rem 1.5rem; background: transparent; border: none; font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--gray); cursor: pointer; transition: all 0.3s ease; position: relative; white-space: nowrap; }
+        .tab-btn::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--secondary); transform: scaleX(0); transition: transform 0.3s ease; }
+        .tab-btn:hover { color: var(--primary); background: rgba(0, 31, 63, 0.03); }
+        .tab-btn.active { color: var(--primary); background: var(--white); }
+        .tab-btn.active::after { transform: scaleX(1); }
+        
+        .tab-content { padding: 2.5rem; display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .tab-content h2 { font-size: 1.6rem; margin-bottom: 1.5rem; color: var(--primary); font-weight: 700; }
+        .tab-content h3 { font-size: 1.2rem; margin: 1.75rem 0 0.75rem; color: var(--dark); font-weight: 600; }
+        .tab-content p { color: var(--gray); margin-bottom: 1rem; line-height: 1.7; }
+        .tab-content ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .tab-content li { color: var(--gray); margin-bottom: 0.6rem; line-height: 1.6; }
+        .tab-content li::marker { color: var(--secondary); }
+        
+        .highlight-box { background: linear-gradient(135deg, rgba(0, 180, 216, 0.08) 0%, rgba(0, 31, 63, 0.05) 100%); border-left: 4px solid var(--secondary); padding: 1.25rem 1.5rem; border-radius: 0 12px 12px 0; margin: 1.5rem 0; }
+        .highlight-box p { margin-bottom: 0; font-weight: 500; color: var(--dark); }
+        
+        .cta { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
+        .btn { padding: 1rem 2.5rem; border-radius: 50px; font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, #003366 100%); color: white; box-shadow: 0 4px 20px rgba(0, 31, 63, 0.3); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0, 31, 63, 0.4); }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero { min-height: 50vh; padding: 7rem 5% 2rem; }
+            .hero-content { max-width: 100%; text-align: center; padding-left: 0; }
+            .hero-large { font-size: 2.5rem; }
+
+            .tabs-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; padding: 0 0.5rem; }
+            .tabs-nav::-webkit-scrollbar { display: none; }
+            .tab-btn { min-width: 130px; padding: 0.875rem 1rem; font-size: 0.8rem; font-weight: 600; white-space: nowrap; flex-shrink: 0; text-align: center; }
+            .tab-btn:first-child { margin-left: 0.5rem; }
+            .tab-btn:last-child { margin-right: 0.5rem; }
+
+            .tab-content { padding: 1.5rem 1rem; }
+            .tab-content h2 { font-size: 1.4rem; margin-bottom: 1rem; }
+            .tab-content h3 { font-size: 1.1rem; margin: 1.25rem 0 0.5rem; }
+            .tab-content p { font-size: 0.95rem; line-height: 1.6; }
+            .tab-content ul { padding-left: 1rem; }
+            .tab-content li { font-size: 0.95rem; margin-bottom: 0.5rem; }
+
+            .highlight-box { padding: 1rem 1.25rem; margin: 1rem 0; }
+            .highlight-box p { font-size: 0.95rem; }
+
+            .cta { flex-direction: column; gap: 1rem; }
+            .btn { padding: 1rem 2rem; font-size: 1rem; }
+
+            .nav-links { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .tab-btn { min-width: 110px; padding: 0.75rem 0.875rem; font-size: 0.75rem; }
+            .tab-content { padding: 1rem; }
+            .tab-content h2 { font-size: 1.2rem; }
+            .tab-content h3 { font-size: 1rem; }
+            .hero-large { font-size: 2rem; }
+            .hero-small { font-size: 1rem; }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Featured Section */
+        .featured {
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.5) 100%);
+            padding: 5rem 5%;
+        }
+
+        .featured-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .featured-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .featured-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .featured-text p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 1rem 0 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .section-header {
+                text-align: center;
+            }
+
+            .featured-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .featured-content .featured-image,
+            .featured-content .featured-text {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="Viora Education">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#countries">Countries</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+            <li><a href="https://www.facebook.com/vioraedu" target="_blank" style="color: #1877F2; font-weight: 600;">f Facebook</a></li>
+        </ul>
+        <div class="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-small">Study in</div>
+            <div class="hero-large">United Kingdom</div>
+        </div>
+    </section>
+
+    <div class="content">
+        <a href="index.html" class="back-btn">← Back to Home</a>
+        
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="overview">1. Overview</button>
+                <button class="tab-btn" data-tab="enrollment">2. Enrollment</button>
+                <button class="tab-btn" data-tab="guidelines">3. Guidelines</button>
+                <button class="tab-btn" data-tab="visa">4. Visa</button>
+                <button class="tab-btn" data-tab="institutions">5. Institutions</button>
+            </div>
+            
+            <div id="overview" class="tab-content active">
+                <h2>Overview</h2>
+                <p>The United Kingdom is home to some of the world's oldest and most prestigious universities, offering globally recognized degrees across diverse disciplines. With a rich academic heritage dating back centuries, British education combines tradition with innovation.</p>
+                
+                <h3>Why Study in UK?</h3>
+                <ul>
+                    <li>World-ranked universities (Oxford, Cambridge, Imperial College)</li>
+                    <li>Internationally recognized degrees valued by employers worldwide</li>
+                    <li>Shorter course durations - Bachelor's (3 years), Master's (1 year)</li>
+                    <li>Multicultural environment with students from over 200 countries</li>
+                    <li>Post-study work opportunities (Graduate Route)</li>
+                    <li>English-language instruction throughout</li>
+                    <li>Access to world-class research facilities</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <p>UK universities consistently rank among the top 10 globally for quality education and graduate employability.</p>
+                </div>
+                
+                <h3>Cost of Living</h3>
+                <p>International students should budget approximately £1,000-£1,400 per month for living expenses, including accommodation, food, transport, and personal costs. London tends to be more expensive.</p>
+                
+                <h3>Intakes</h3>
+                <p>Most UK universities offer two main intakes: September/October (Primary) and January/February (Secondary). Some courses also have May/June intake.</p>
+            </div>
+            
+            <div id="enrollment" class="tab-content">
+                <h2>Enrollment Process</h2>
+                <p>The enrollment process for UK universities is straightforward but requires attention to deadlines and document preparation.</p>
+                
+                <h3>Step-by-Step Guide</h3>
+                <ul>
+                    <li><strong>Research Universities:</strong> Explore programmes and entry requirements</li>
+                    <li><strong>Prepare Documents:</strong> SOP, LORs, transcripts, English test scores</li>
+                    <li><strong>Take English Tests:</strong> IELTS/TOEFL/PTE - check minimum requirements</li>
+                    <li><strong>Submit Application:</strong> Through UCAS or direct to university</li>
+                    <li><strong>Receive Offer:</strong> Conditional/Unconditional offer letter</li>
+                    <li><strong>Accept Offer:</strong> Pay deposit and meet conditions</li>
+                    <li><strong>Apply for Visa:</strong> Submit CAS and financial documents</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <p>Start your application at least 6-12 months before your intended intake for the best chance of acceptance.</p>
+                </div>
+                
+                <h3>Required Documents</h3>
+                <ul>
+                    <li>Valid Passport</li>
+                    <li>Academic Transcripts (English certified)</li>
+                    <li>English Proficiency Certificate (IELTS 6.0-6.5 minimum)</li>
+                    <li>Personal Statement</li>
+                    <li>2-3 Letters of Recommendation</li>
+                    <li>CV (for postgraduate applications)</li>
+                </ul>
+            </div>
+            
+            <div id="guidelines" class="tab-content">
+                <h2>Guidelines</h2>
+                <p>Before applying to UK universities, ensure you meet the following guidelines and requirements.</p>
+                
+                <h3>Academic Requirements</h3>
+                <ul>
+                    <li><strong>Undergraduate:</strong> A-levels, IB, or equivalent with 60-80% marks</li>
+                    <li><strong>Postgraduate:</strong> Bachelor's degree with 55-65% marks (UK grading: 2:2 or 2:1)</li>
+                    <li><strong>Foundation:</strong> For students not meeting direct entry requirements</li>
+                </ul>
+                
+                <h3>English Language Requirements</h3>
+                <ul>
+                    <li><strong>IELTS:</strong> 6.0-6.5 (no band below 5.5)</li>
+                    <li><strong>TOEFL iBT:</strong> 79-92</li>
+                    <li><strong>PTE Academic:</strong> 50-59</li>
+                    <li>Some universities offer pre-sessional English courses</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <p>Check specific course requirements as they vary by university and programme. Some competitive courses may require higher scores.</p>
+                </div>
+                
+                <h3>Financial Requirements</h3>
+                <p>You must demonstrate ability to pay tuition fees and living costs. UKVI requires proof of funds for visa application.</p>
+            </div>
+            
+            <div id="visa" class="tab-content">
+                <h2>Visa Application</h2>
+                <p>International students need a Student Visa (previously Tier 4) to study in the UK. The process is entirely online.</p>
+                
+                <h3>Visa Types</h3>
+                <ul>
+                    <li><strong>Student Visa:</strong> For courses level 4 and above, 6+ months duration</li>
+                    <li><strong>Short-term Study Visa:</strong> For courses up to 6 months</li>
+                </ul>
+                
+                <h3>Documents Required</h3>
+                <ul>
+                    <li>Confirmation of Acceptance for Studies (CAS)</li>
+                    <li>Valid Passport</li>
+                    <li>Proof of English language proficiency</li>
+                    <li>Financial documents (bank statements)</li>
+                    <li>ATAS certificate (for some science/engineering courses)</li>
+                    <li>TB test certificate (from approved clinics)</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <p>Apply for your visa as soon as you receive your CAS. Processing typically takes 3-8 weeks.</p>
+                </div>
+                
+                <h3>Visa Fees</h3>
+                <ul>
+                    <li>Student Visa: £363 (outside UK)</li>
+                    <li>Immigration Health Surcharge: £776/year</li>
+                    <li>Biometric fee: £19.20</li>
+                </ul>
+                
+                <h3>Post-Visa</h3>
+                <p>After approval, you can enter the UK up to 7 days before your course starts. You'll collect BRP from designated post office.</p>
+            </div>
+            
+            <div id="institutions" class="tab-content">
+                <h2>Top Institutions</h2>
+                <p>The UK has over 150 universities offering diverse programmes across various disciplines.</p>
+                
+                <h3>Top-Ranked Universities</h3>
+                <ul>
+                    <li>University of Oxford</li>
+                    <li>University of Cambridge</li>
+                    <li>Imperial College London</li>
+                    <li>University College London (UCL)</li>
+                    <li>London School of Economics (LSE)</li>
+                    <li>University of Edinburgh</li>
+                    <li>King's College London</li>
+                    <li>University of Manchester</li>
+                    <li>University of Bristol</li>
+                    <li>University of Warwick</li>
+                </ul>
+                
+                <h3>Popular Courses</h3>
+                <ul>
+                    <li>Business & Management</li>
+                    <li>Engineering (Mechanical, Civil, Electrical)</li>
+                    <li>Computer Science & AI</li>
+                    <li>Medicine & Healthcare</li>
+                    <li>Law</li>
+                    <li>Economics & Finance</li>
+                    <li>Arts & Design</li>
+                    <li>Social Sciences</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <p>Viora Education Consultancy provides free counseling to help you choose the right university and course based on your profile.</p>
+                </div>
+                
+                <h3>How Viora Helps</h3>
+                <ul>
+                    <li>University selection guidance</li>
+                    <li>Application assistance</li>
+                    <li>Document preparation</li>
+                    <li>Visa guidance</li>
+                    <li>Pre-departure briefing</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="cta">
+            <a href="https://wa.me/8801611285651" class="btn btn-primary">Apply Now via WhatsApp</a>
+        </div>
+    </div>
+
+    <!-- Featured Update Section -->
+    <section class="featured">
+        <div class="section-header">
+            <h2>Featured Update</h2>
+        </div>
+        <div class="featured-content">
+            <div class="featured-image fade-in">
+                <img src="poster.jpg" alt="Featured Update">
+            </div>
+            <div class="featured-text glass-card fade-in" style="padding: 2.5rem;">
+                <h3>Spring 2026 Intake Now Open!</h3>
+                <p>Multiple universities in UK, Malaysia, and Europe are now accepting applications for Spring 2026. Don't miss your chance to secure a place at your dream university.</p>
+                <ul class="about-features">
+                    <li><span class="check-icon">✓</span>Limited seats available</li>
+                    <li><span class="check-icon">✓</span>Early bird scholarships</li>
+                    <li><span class="check-icon">✓</span>Fast-track admission</li>
+                </ul>
+                <a href="https://wa.me/8801611285651" class="btn btn-primary" style="margin-top: 1rem;">Apply Now →</a>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        mobileMenu.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            navLinks.style.position = 'absolute';
+            navLinks.style.top = '100%';
+            navLinks.style.left = '0';
+            navLinks.style.right = '0';
+            navLinks.style.background = 'white';
+            navLinks.style.flexDirection = 'column';
+            navLinks.style.padding = '1rem';
+            navLinks.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+        });
+    </script>
+</body>
+</html>

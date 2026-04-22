@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viora Education Consultancy | Study Abroad Made Easy</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #001F3F;
+            --primary-dark: #000D1A;
+            --secondary: #00B4D8;
+            --accent: #48CAE4;
+            --white: #FFFFFF;
+            --light: #F0F4F8;
+            --gray: #8B9DC3;
+            --dark: #001F3F;
+            --glass: rgba(0, 31, 63, 0.15);
+            --glass-border: rgba(0, 31, 63, 0.25);
+            --shadow: 0 8px 32px rgba(0, 31, 63, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #F0F4F8 0%, #E8EEF4 50%, #FFFFFF 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0.875rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 42px;
+            border-radius: 6px;
+        }
+
+.nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            list-style: none;
+            margin-left: 1rem;
+        }
+
+        .nav-links li {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .nav-links a:not([style*="background"]):hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-links .facebook-link {
+            background: #1877F2;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .nav-links .facebook-link::after {
+            display: none;
+        }
+
+        .nav-links .facebook-link:hover {
+            background: #166FE5;
+        }
+
+        .mobile-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 5% 3rem;
+            position: relative;
+            overflow: hidden;
+            background: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 8px 32px rgba(0, 31, 63, 0.15);
+            opacity: 0;
+            animation: heroFadeIn 1s ease 0.5s forwards;
+        }
+
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(0, 31, 63, 0.8) 0%, rgba(0, 31, 63, 0.2) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(0, 31, 63, 0.12) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 50%;
+            padding-left: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: white;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            text-align: left;
+            animation: fadeInLeft 1s ease;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            color: #FFD700;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.3);
+            animation: fadeInLeft 1s ease 0.1s both;
+        }
+
+        .hero p {
+            color: white;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.2rem;
+            background: rgba(0, 31, 63, 0.8);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 180, 216, 0.3);
+            animation: fadeInLeft 1s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            justify-content: flex-start;
+            gap: 1.5rem;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-buttons .btn {
+            font-size: 1.1rem;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .hero-buttons .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .hero-buttons .btn:hover::before {
+            left: 100%;
+        }
+
+        .hero-buttons .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 31, 63, 0.4);
+        }
+
+        .hero-buttons .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #003366 100%);
+            color: var(--white);
+            border: none;
+        }
+
+        .hero-buttons .btn-primary:hover {
+            background: linear-gradient(135deg, #003366 0%, var(--primary) 100%);
+            color: var(--white);
+        }
+
+        .hero-buttons .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .hero-buttons .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #003366 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #003366 100%);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(0, 31, 63, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 31, 63, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-animate {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-animate:active {
+            transform: scale(0.95);
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInRight 1s ease 0.3s both;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-form {
+            flex: 1;
+            max-width: 450px;
+            margin-left: auto;
+            animation: fadeInRight 1s ease 0.3s both;
+        }
+
+        .hero-form .glass-card {
+            padding: 2rem;
+        }
+
+        .hero-form h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        .hero-form .subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .hero-form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .hero-form .form-group input,
+        .hero-form .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid rgba(0, 31, 63, 0.2);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .hero-form .form-group input:focus,
+        .hero-form .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 31, 63, 0.1);
+        }
+
+        .hero-form .form-group textarea {
+            resize: none;
+            min-height: 80px;
+        }
+
+        .hero-form .btn {
+            width: 100%;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        @media (min-width: 1025px) {
+            .hero-image {
+                display: none;
+            }
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 31, 63, 0.25);
+            border-color: var(--secondary);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about {
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.5) 100%);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .about-features {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .about-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, #003366 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* Countries Section */
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .country-card {
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .country-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 31, 63, 0.2);
+        }
+
+        .country-flag {
+            width: 160px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 25px rgba(0, 31, 63, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .country-card:hover .country-flag {
+            transform: scale(1.1);
+        }
+
+        .country-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .country-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .country-card .btn {
+            font-size: 0.9rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        /* Services Section */
+        .services {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.1) 0%, rgba(0, 180, 216, 0.1) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.3);
+        }
+
+        .service-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+
+        .service-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Why Choose Section */
+        .why-choose {
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.03) 0%, rgba(0, 180, 216, 0.03) 100%);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .benefit-card {
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, #003366 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .benefit-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .benefit-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Featured Section */
+        .featured {
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.5) 100%);
+        }
+
+        .featured-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .featured-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .featured-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .featured-text p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 100%);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            font-size: 4rem;
+            color: var(--secondary);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-text {
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+            font-style: italic;
+            padding-top: 2rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, #003366 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .author-info h5 {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.5) 100%);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            text-align: left;
+        }
+
+        .contact-info > p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .method-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.1) 0%, rgba(0, 180, 216, 0.1) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .method-details h5 {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .method-details p {
+            color: #000;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .method-details p a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .method-details p a:hover {
+            color: var(--secondary);
+        }
+
+        .contact-form-container {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .contact-form {
+            padding: 2.5rem;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .contact-info > p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+            #contact-methods {
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .method-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(0, 31, 63, 0.1) 0%, rgba(0, 180, 216, 0.1) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .method-details h5 {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .method-details p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .contact-form {
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input:hover,
+        .form-group textarea:hover {
+            border-color: var(--secondary);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 31, 63, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form .btn {
+            width: 100%;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: white;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+            background: #20BD5A;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .bounce:hover {
+            animation: bounce 1s ease infinite;
+        }
+
+        .pulse:hover {
+            animation: pulse 1.5s ease infinite;
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .services-grid .service-card:nth-child(1) { transition-delay: 0.1s; }
+        .services-grid .service-card:nth-child(2) { transition-delay: 0.2s; }
+        .services-grid .service-card:nth-child(3) { transition-delay: 0.3s; }
+        .services-grid .service-card:nth-child(4) { transition-delay: 0.4s; }
+
+        .countries-grid .country-card:nth-child(1) { transition-delay: 0.1s; }
+        .countries-grid .country-card:nth-child(2) { transition-delay: 0.2s; }
+        .countries-grid .country-card:nth-child(3) { transition-delay: 0.3s; }
+
+        .benefits-grid .benefit-card:nth-child(1) { transition-delay: 0.1s; }
+        .benefits-grid .benefit-card:nth-child(2) { transition-delay: 0.2s; }
+        .benefits-grid .benefit-card:nth-child(3) { transition-delay: 0.3s; }
+        .benefits-grid .benefit-card:nth-child(4) { transition-delay: 0.4s; }
+
+        .testimonials-grid .testimonial-card:nth-child(1) { transition-delay: 0.1s; }
+        .testimonials-grid .testimonial-card:nth-child(2) { transition-delay: 0.2s; }
+        .testimonials-grid .testimonial-card:nth-child(3) { transition-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                min-height: 70vh;
+                padding: 7rem 5% 2rem;
+            }
+
+            .hero-content {
+                max-width: 100%;
+                text-align: center;
+                padding-left: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+
+            .hero p {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .hero-buttons .btn {
+                font-size: 1rem;
+                padding: 1rem 2rem;
+            }
+
+            .about-content,
+            .featured-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1rem;
+            }
+
+            .hero {
+                background-attachment: scroll;
+                min-height: 60vh;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-info {
+                text-align: center;
+            }
+
+            .contact-methods {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .contact-method {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .whatsapp-float {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1rem;
+            }
+
+            .hero {
+                background-attachment: scroll;
+                min-height: 60vh;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .contact-methods {
+                flex-direction: column !important;
+                gap: 1rem !important;
+                align-items: center;
+            }
+
+            .contact-method {
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 0.5rem !important;
+                text-align: center !important;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .whatsapp-float {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 55px;
+                height: 55px;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .whatsapp-float {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 55px;
+                height: 55px;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .whatsapp-float {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1rem;
+            }
+
+            .hero {
+                background-attachment: scroll;
+                min-height: 60vh;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .whatsapp-float {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero {
+                background-attachment: scroll;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .whatsapp-float {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.95rem;
+            }
+
+            section {
+                padding: 3rem 5%;
+            }
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: var(--primary);
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        #loading-screen.hidden {
+            display: none !important;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid var(--white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-screen.fade-out {
+            animation: fadeOut 0.8s ease forwards;
+        }
+
+        body.loaded .loading-screen {
+            display: none;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Navbar Responsive - hide mobile menu on desktop */
+        @media (min-width: 769px) {
+            .mobile-menu {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.75rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+        }
+
+        /* Footer */
+        .site-footer {
+            background: linear-gradient(rgba(0, 31, 63, 0.92), rgba(0, 31, 63, 0.92)), url('footer background.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #00B4D8;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            background: #00B4D8;
+            color: #001F3F;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            .site-footer {
+                padding: 3rem 5% 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-column {
+                text-align: center;
+            }
+        }
+
+        /* AI Chatbot */
+        #chatbot-widget {
+            position: fixed !important;
+            bottom: 2rem !important;
+            left: 2rem !important;
+            z-index: 99999 !important;
+            display: block !important;
+        }
+
+        #chatbot-widget .chatbot-toggle {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #001F3F 0%, #003366 100%) !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 31, 63, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        #chatbot-widget .chatbot-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        #chatbot-widget .chatbot-window {
+            width: 340px;
+            height: 450px;
+            right: auto;
+            left: 0;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 31, 63, 0.5);
+        }
+
+        .chatbot-toggle svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .chatbot-toggle .close-icon {
+            display: none;
+        }
+
+        .chatbot-toggle.active .chat-icon {
+            display: none;
+        }
+
+        .chatbot-toggle.active .close-icon {
+            display: block;
+        }
+
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 31, 63, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #001F3F 0%, #003366 100%);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chatbot-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chatbot-header-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .chatbot-header-info p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            background: #f8fafc;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .message.bot {
+            background: #001F3F;
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user {
+            background: #00B4D8;
+            color: #001F3F;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.typing {
+            display: flex;
+            gap: 4px;
+            padding: 0.75rem 1rem;
+        }
+
+        .message.typing span {
+            width: 8px;
+            height: 8px;
+            background: #001F3F;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .message.typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .message.typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .quick-reply {
+            background: #001F3F;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .quick-reply:hover {
+            background: #00B4D8;
+            color: #001F3F;
+        }
+
+        .chatbot-input {
+            padding: 1rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chatbot-input input:focus {
+            border-color: #00B4D8;
+        }
+
+        .chatbot-input button {
+            width: 45px;
+            height: 45px;
+            background: #001F3F;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chatbot-input button:hover {
+            background: #00B4D8;
+        }
+
+        .chatbot-input button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .lead-form {
+            padding: 1rem;
+        }
+
+        .lead-form h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #001F3F;
+            text-align: center;
+        }
+
+        .lead-form input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .lead-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background: #001F3F;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+@media (max-width: 480px) {
+            .chatbot-widget {
+                bottom: 1.5rem;
+                left: 1.5rem;
+            }
+
+            #chatbot-widget .chatbot-window {
+                width: 300px;
+                height: 400px;
+                right: auto;
+                left: -10px;
+            }
+
+            .whatsapp-float {
+                right: 1.5rem;
+                bottom: 1.5rem;
+            }
+
+            #chatbot-widget .chatbot-toggle {
+                width: 50px;
+                height: 50px;
+            }
+
+            #chatbot-widget .chatbot-toggle svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+            .chatbot-window {
+                width: calc(100vw - 2rem);
+                height: calc(100vh - 5rem);
+                left: -0.5rem;
+                bottom: 70px;
+            }
+
+            .whatsapp-float {
+                right: 2rem;
+                bottom: 2rem;
+            }
+
+            .chatbot-widget {
+                bottom: 2rem;
+                left: 2rem;
+            }
+        }
+
+        </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="spinner"></div>
+    </div>
+    <script>
+        setTimeout(function() {
+            var loading = document.getElementById('loading-screen');
+            loading.classList.add('fade-out');
+            document.body.classList.add('loaded');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 3000);
+    </script>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Viora Education">
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#countries">Countries</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://www.facebook.com/vioraedu" target="_blank" style="background:#1877F2;color:#fff;padding:0.5rem 1rem;border-radius:6px;font-weight:600;">f Facebook</a></li>
+        </ul>
+        <div class="mobile-menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>VIORA Education Consultation</h1>
+            <h2>Your Trusted Partner for Global Education Pathways</h2>
+            <p>Your gateway to world-class education in Malaysia, UK, and Europe. We guide you through every step of your international education journey.</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Book Free Consultation →</a>
+                <a href="#countries" class="btn btn-secondary">Explore Countries</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-header">
+            <h2>Your Dream, Our Mission</h2>
+            <p>We've helped hundreds of students achieve their dream of studying abroad. Let us help you too.</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text glass-card fade-in" style="padding: 2.5rem;">
+                <h3>Welcome to Viora Education Consultancy</h3>
+                <p>At Viora, we believe every student deserves access to quality education anywhere in the world. With years of experience and strong partnerships with top universities, we make your study abroad dreams a reality.</p>
+                <ul class="about-features">
+                    <li><span class="check-icon">✓</span>99% Visa Approval Rate</li>
+                    <li><span class="check-icon">✓</span>100+ University Partnerships</li>
+                    <li><span class="check-icon">✓</span>Free Career Counseling</li>
+                    <li><span class="check-icon">✓</span>Post-Arrival Support</li>
+                </ul>
+            </div>
+            <div class="fade-in">
+                <img src="poster.jpg" alt="Students Success" style="width: 100%; border-radius: 20px; box-shadow: var(--shadow);">
+                <a href="https://wa.me/8801611285651" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: block; text-align: center;">
+                    Apply Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countries Section -->
+    <section class="countries" id="countries">
+        <div class="section-header">
+            <h2>Study in Your Dream Destination</h2>
+            <p>Explore top educational destinations with our expert guidance</p>
+        </div>
+        <div class="countries-grid">
+            <div class="country-card glass-card fade-in">
+                <img src="uk flag.jpg" alt="UK Flag" class="country-flag">
+                <h3>United Kingdom</h3>
+                <p>World-renowned universities with historic campuses. Get a globally recognized degree in 1-3 years.</p>
+                <a href="uk.html" class="btn btn-primary">Learn More</a>
+            </div>
+            <div class="country-card glass-card fade-in">
+                <img src="malaysia flag.jpg" alt="Malaysia Flag" class="country-flag">
+                <h3>Malaysia</h3>
+                <p>Affordable quality education with proximity to home. Experience multicultural learning environment.</p>
+                <a href="malaysia.html" class="btn btn-primary">Learn More</a>
+            </div>
+            <div class="country-card glass-card fade-in">
+                <img src="europe flag.jpg" alt="Europe Flag" class="country-flag">
+                <h3>Europe</h3>
+                <p>Study in Germany, France, Netherlands, and more. Many programs available in English.</p>
+                <a href="europe.html" class="btn btn-primary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>Our Services</h2>
+            <p>End-to-end support for your entire study abroad journey</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card glass-card fade-in">
+                <div class="service-icon">🎓</div>
+                <h4>University Admission</h4>
+                <p>Application assistance, document preparation, and admission guidance to top universities</p>
+            </div>
+            <div class="service-card glass-card fade-in">
+                <div class="service-icon">📄</div>
+                <h4>Visa Processing</h4>
+                <p>Complete visa application support with high success rate documentation</p>
+            </div>
+            <div class="service-card glass-card fade-in">
+                <div class="service-icon">💼</div>
+                <h4>Job Guidance</h4>
+                <p>Career counseling and job placement assistance for international graduates</p>
+            </div>
+            <div class="service-card glass-card fade-in">
+                <div class="service-icon">🎯</div>
+                <h4>Scholarship Assistance</h4>
+                <p>Help finding and applying for scholarships, grants, and financial aid</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Section -->
+    <section class="why-choose">
+        <div class="section-header">
+            <h2>Why Choose Viora?</h2>
+            <p>What sets us apart in education consultancy</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card glass-card fade-in">
+                <div class="benefit-icon">✓</div>
+                <div>
+                    <h4>High Success Rate</h4>
+                    <p>99% visa approval and admission success</p>
+                </div>
+            </div>
+            <div class="benefit-card glass-card fade-in">
+                <div class="benefit-icon">★</div>
+                <div>
+                    <h4>Expert Counselors</h4>
+                    <p>Experienced advisors with global knowledge</p>
+                </div>
+            </div>
+            <div class="benefit-card glass-card fade-in">
+                <div class="benefit-icon">♥</div>
+                <div>
+                    <h4>Personalized Service</h4>
+                    <p>Tailored plans for each student's needs</p>
+                </div>
+            </div>
+            <div class="benefit-card glass-card fade-in">
+                <div class="benefit-icon">•</div>
+                <div>
+                    <h4>Free Consultation</h4>
+                    <p>Initial advice at no cost to you</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Update Section -->
+    <section class="featured">
+        <div class="section-header">
+            <h2>Featured Update</h2>
+        </div>
+        <div class="featured-content">
+            <div class="featured-image fade-in">
+                <img src="poster.jpg" alt="Featured Update">
+            </div>
+            <div class="featured-text glass-card fade-in" style="padding: 2.5rem;">
+                <h3>Spring 2026 Intake Now Open!</h3>
+                <p>Multiple universities in UK, Malaysia, and Europe are now accepting applications for Spring 2026. Don't miss your chance to secure a place at your dream university.</p>
+                <ul class="about-features">
+                    <li><span class="check-icon">✓</span>Limited seats available</li>
+                    <li><span class="check-icon">✓</span>Early bird scholarships</li>
+                    <li><span class="check-icon">✓</span>Fast-track admission</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary" style="margin-top: 1rem;">Apply Now →</a>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Get in Touch</h3>
+                <p>Have questions? Contact us for a free consultation.</p>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <div class="method-icon">f</div>
+                        <div class="method-details">
+                            <h5>Facebook</h5>
+                            <p><a href="https://www.facebook.com/vioraedu" target="_blank">Viora Education</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="method-icon">💬</div>
+                        <div class="method-details">
+                            <h5>WhatsApp</h5>
+                            <p><a href="https://wa.me/8801611285651" target="_blank">+88 01611285651</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="method-icon">✉️</div>
+                        <div class="method-details">
+                            <h5>Email</h5>
+                            <p><a href="mailto:vioraeducationconsultancy@gmail.com">vioraeducationconsultancy@gmail.com</a></p>
+                        </div>
+                    </div>
+                </div>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3668.854201773452!2d89.24687601103469!3d23.139003911885716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ff0f00531f6347%3A0xffc7f0afe01175a!2sBK%20City%20Hotel%20%26%20Resort!5e0!3m2!1sen!2sbd!4v1776792152625!5m2!1sen!2sbd" width="100%" height="300" style="border:0; border-radius: 12px; margin-top: 1.5rem;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="contact-form-container">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea placeholder="How can we help you?" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/8801611285651" class="whatsapp-float" target="_blank" title="Chat on WhatsApp" style="pointer-events: none; opacity: 0.7;">
+        <span style="color: white; font-size: 1.5rem; font-weight: bold;">W</span>
+    </a>
+
+
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitContactForm(e);
+        });
+
+        function submitContactForm(e) {
+            var form = e.target;
+            var name = form.querySelector('input[type="text"]').value;
+            var email = form.querySelector('input[type="email"]').value;
+            var message = form.querySelector('textarea').value;
+            
+            if (supabaseClient) {
+                supabaseClient.from('consultations').insert([{
+                    name: name,
+                    phone: email,
+                    message: 'From Contact Form - ' + message,
+                    created_at: new Date().toISOString()
+                }]).then(function(res) {
+                    if (res.error) {
+                        alert('Error: ' + res.error.message);
+                    } else {
+                        alert('Thank you! We will get back to you soon.');
+                    }
+                });
+            } else {
+                alert('Thank you! We will get back to you soon.');
+            }
+            form.reset();
+        }
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        // Loading screen
+        setTimeout(function() {
+            var loading = document.getElementById('loading-screen');
+            if (loading) loading.style.display = 'none';
+        }, 1500);
+
+        function toggleChatbot() {
+            var win = document.getElementById('chatbotWindow');
+            var tog = document.querySelector('.chatbot-toggle');
+            if (win.style.display == 'none') {
+                win.style.display = 'flex';
+            } else {
+                win.style.display = 'none';
+            }
+        }
+    </script>
+
+    <!-- AI Chatbot -->
+    <div id="chatbot-widget" class="chatbot-widget">
+        <div class="chatbot-window" id="chatbotWindow" style="display: none;">
+            <div class="chatbot-header">
+                <img src="logo.png" alt="Viora">
+                <div class="chatbot-header-info">
+                    <h4>AI Assistant</h4>
+                    <p>Ask me anything!</p>
+                </div>
+            </div>
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="message bot">Hello! 👋 I'm your AI assistant from Viora Education. How can I help you today?</div>
+                <div class="quick-replies">
+                    <button class="quick-reply" onclick="sendQuickReply('I want to study in UK')">Study in UK</button>
+                    <button class="quick-reply" onclick="sendQuickReply('I want to study in Malaysia')">Study in Malaysia</button>
+                    <button class="quick-reply" onclick="sendQuickReply('I want to study in Europe')">Study in Europe</button>
+                    <button class="quick-reply" onclick="showLeadForm()">Get Consultation</button>
+                </div>
+            </div>
+            <div class="chatbot-input" id="chatInput">
+                <input type="text" id="userMessage" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+            <div class="lead-form" id="leadForm" style="display: none;">
+                <h3>Get Free Consultation</h3>
+                <input type="text" id="leadName" placeholder="Your Name" required>
+                <input type="tel" id="leadPhone" placeholder="Phone Number" required>
+                <input type="text" id="leadMessage" placeholder="Your Message">
+                <button onclick="submitLead()">Submit</button>
+                <p style="margin-top: 0.5rem; text-align: center; font-size: 0.8rem; cursor: pointer;" onclick="showChat()">← Back to chat</p>
+            </div>
+        </div>
+        <div class="chatbot-toggle" onclick="toggleChatbot()">
+            <svg class="chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+            <svg class="close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+    </div>
+<script>
+        // Initialize Supabase
+        var supabaseUrl = 'https://csnxecalasvqbbbfzcoo.supabase.co';
+        var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNzbnhlY2FsYXN2cWJiYmZ6Y29vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3ODUwMjEsImV4cCI6MjA5MjM2MTAyMX0.irzfAJb0W1nr9I24k83RhYnfiiI-gPpqPrceBC9WJsA';
+        var supabaseClient = null;
+        
+        if (window.supabase) {
+            supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            console.log('Supabase initialized');
+        } else {
+            console.log('Supabase not loaded');
+        }
+
+        // Toggle chatbot
+        function toggleChatbot() {
+            var win = document.getElementById('chatbotWindow');
+            if (win.style.display === 'none' || win.style.display === '') {
+                win.style.display = 'flex';
+            } else {
+                win.style.display = 'none';
+            }
+        }
+
+        // Close chatbot when clicking outside
+        document.addEventListener('click', function(e) {
+            var widget = document.getElementById('chatbot-widget');
+            var win = document.getElementById('chatbotWindow');
+            if (!widget.contains(e.target)) {
+                win.style.display = 'none';
+            }
+        });
+
+        // Handle Enter key
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        // Add message to chat
+        function addMessage(text, isUser) {
+            var div = document.createElement('div');
+            div.className = 'message ' + (isUser ? 'user' : 'bot');
+            div.textContent = text;
+            document.getElementById('chatMessages').appendChild(div);
+            document.getElementById('chatMessages').scrollTop = 9999;
+        }
+
+        // Send message
+        function sendMessage() {
+            var input = document.getElementById('userMessage');
+            var text = input.value.trim();
+            if (!text) return;
+            
+            addMessage(text, true);
+            input.value = '';
+
+            setTimeout(function() {
+                var reply = "Thanks! For help, click 'Get Consultation' or email vioraeducationconsultancy@gmail.com";
+                if (text.toLowerCase().indexOf('uk') > -1) reply = "UK! Top unis: Oxford, Cambridge. We help you apply!";
+                if (text.toLowerCase().indexOf('malaysia') > -1) reply = "Malaysia! Affordable. Best: UM, UITM.";
+                if (text.toLowerCase().indexOf('europe') > -1) reply = "Europe: Germany, France, Netherlands have English programs!";
+                if (text.toLowerCase().indexOf('visa') > -1) reply = "Visa help! 99% success rate.";
+                addMessage(reply, false);
+            }, 600);
+        }
+
+        function sendQuickReply(t) {
+            document.getElementById('userMessage').value = t;
+            sendMessage();
+        }
+
+        function showLeadForm() {
+            document.getElementById('chatInput').style.display = 'none';
+            document.getElementById('leadForm').style.display = 'block';
+            document.querySelector('.quick-replies').style.display = 'none';
+        }
+
+        function showChat() {
+            document.getElementById('chatInput').style.display = 'flex';
+            document.getElementById('leadForm').style.display = 'none';
+            document.querySelector('.quick-replies').style.display = 'flex';
+        }
+
+        // Submit lead
+        function submitLead() {
+            var name = document.getElementById('leadName').value;
+            var phone = document.getElementById('leadPhone').value;
+            var msg = document.getElementById('leadMessage').value;
+            if (!name || !phone) {
+                alert('Please fill name and phone!');
+                return;
+            }
+            
+            if (supabaseClient) {
+                supabaseClient.from('consultations').insert([{
+                    name: name, 
+                    phone: phone, 
+                    message: msg, 
+                    created_at: new Date().toISOString()
+                }]).then(function(res) {
+                    console.log('Save result:', res);
+                    if (res.error) {
+                        alert('Error: ' + res.error.message);
+                    } else {
+                        alert('Thank you! We will contact you soon.');
+                    }
+                });
+            } else {
+                alert('Thank you! We will contact you soon.');
+            }
+            document.getElementById('leadName').value = '';
+            document.getElementById('leadPhone').value = '';
+            document.getElementById('leadMessage').value = '';
+            showChat();
+        }
+
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        setTimeout(function() {
+            var l = document.getElementById('loading-screen');
+            if (l) {
+                l.style.display = 'none';
+            }
+        }, 1500);
+    </script>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="logo.png" alt="Viora" style="height: 45px; margin-bottom: 1rem;">
+                    <p>Your trusted partner for global education. We help students achieve their dream of studying abroad in Malaysia, UK, and Europe.</p>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#countries">Countries</a></li>
+                        <li><a href="#services">Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="tel:+8801611285651">+88 01611285651</a></li>
+                        <li><a href="mailto:vioraeducationconsultancy@gmail.com">vioraeducationconsultancy@gmail.com</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">Follow Us</h4>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/vioraedu" target="_blank">f</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Viora Education Consultation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+</html>
